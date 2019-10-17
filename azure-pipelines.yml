@@ -10,6 +10,20 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- task: AzureKeyVault@1
+  inputs:
+    azureSubscription: 'Pay-As-You-Go (42df2347-4819-4f20-8061-59dbfc6b58d5)'
+    KeyVaultName: 'poc-kv-dev'
+    SecretsFilter: '*'
+- task: replacetokens@3
+  inputs:
+    targetFiles: '**/*.properties'
+    encoding: 'auto'
+    writeBOM: true
+    actionOnMissing: 'warn'
+    keepToken: false
+    tokenPrefix: '*{'
+    tokenSuffix: '*}'
 - task: Maven@3
   inputs:
     options: -Dmaven.test.skip=true
